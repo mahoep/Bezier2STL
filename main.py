@@ -24,7 +24,7 @@ y = [points[i].y for i in range(np.size(points))]
 z = [points[i].z for i in range(np.size(points))]
 
 P = np.array([x,y,z])
-t = np.linspace(0,1,50)
+t = np.linspace(0,1,200)
 Q = bezierFunc.Bezier(P,t)
 Q[0,:] = Q[0,:] + upStreamDist - min(Q[0,:])
 Q[1,:] = Q[1,:] + R2
