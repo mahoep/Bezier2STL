@@ -35,9 +35,14 @@ def Bezier(P,t):
      
     return Q
 
+
 def Bernstein(n,j,t):
+    """
+    This function is only for readability, it's only ever called under Bezier()
+    """
     B=factorial(n)/(factorial(j)*factorial(n-j))*(t**j)*(1-t)**(n-j)
     return B
+
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt

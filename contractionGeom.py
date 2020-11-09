@@ -11,6 +11,7 @@ import numpy as np
 class ControlPoint():
     """
     Class which holds x,y,z points
+    TODO: Remove this class from the code base
     """
     def __init__(self,x,y,z):
         self.x = x
@@ -59,7 +60,20 @@ def contractionGen(R1, lengthOverRadius):
     return points
 
 
-def downstreamCurve(contractionEndPoint,length):
+def downstreamCurve(contractionEndPoint,upStreamDist):
+    """
+    Parameters
+    ----------
+    contractionEndPoint : numpy.ndarray
+        An x,y,z coordinate pair of the last point generated from the bezier curve (far right)
+    upStreamDist : float
+        defines the straightline distance from the end of the contraction to the end of the domain
+
+    Returns
+    -------
+    downCurve : numpy.ndarray
+        returns two (x,y,z) coordinates.
+    """
     downCurve = np.zeros([3,2])
     downCurve[0,0] = contractionEndPoint[0] # this is the x coord 
     downCurve[1,0] = contractionEndPoint[1] # this is the y coord 
@@ -73,6 +87,17 @@ def downstreamCurve(contractionEndPoint,length):
 
 
 def outletCurve(downCurveEnd):
+    """
+    Parameters
+    ----------
+    downCurveEnd : numpy.ndarray
+        An x,y,z coordinate pair of the last point generated from straightline after bezier
+
+    Returns
+    -------
+    outletLine : numpy.ndarray
+        outletLine is two (x,y,z) coordinates.
+    """
     outletLine = np.zeros([3,2])
     outletLine[0,0] = downCurveEnd[0] # this is the x coord 
     outletLine[1,0] = downCurveEnd[1] # this is the y coord 
@@ -85,20 +110,44 @@ def outletCurve(downCurveEnd):
     return outletLine
 
 
-def symmetryCurve(inletEnd):
+def symmetryCurve(outletEnd):
+    """
+    Parameters
+    ----------
+    inletEnd : numpy.ndarray
+        An x,y,z coordinate pair of the last point generated from outlet line
+
+    Returns
+    -------
+    symmetryLine : numpy.ndarray
+        returns two (x,y,z) coordinate that defines the bottom (symmetry) line
+
+    """
     symmetryLine = np.zeros([3,2])
     symmetryLine[0,0] = 0 # this is the x coord 
     symmetryLine[1,0] = 0 # this is the y coord 
     symmetryLine[2,0] = 0 # this is the z coord 
     
-    symmetryLine[0,1] = inletEnd[0] # this is the x coord
-    symmetryLine[1,1] = inletEnd[1] # this is the y coord 
-    symmetryLine[2,1] = inletEnd[2] # this is the z coord
+    symmetryLine[0,1] = outlet[0] # this is the x coord
+    symmetryLine[1,1] = outlet[1] # this is the y coord 
+    symmetryLine[2,1] = outlet[2] # this is the z coord
     
     return symmetryLine
 
 
 def inletCurve(maxR):
+    """
+    Parameters
+    ----------
+    maxR : float
+        maxR is the overall radius of the geometry (greater than the lip radius).
+
+    Returns
+    -------
+    inletLine : numpy.ndarray
+        returns two (x,y,z) coordinate that defines the inlet (lef) line
+
+    """
     inletLine = np.zeros([3,2])
     inletLine[0,0] = 0 # this is the x coord 
     inletLine[1,0] = 0 # this is the y coord 
@@ -110,33 +159,81 @@ def inletCurve(maxR):
     
     return inletLine
 
+
 def topCurve(inletLineEnd, downCurveEnd):
+    """
+    Parameters
+    ----------
+    inletLineEnd : numpy.ndarray
+        An x,y,z coordinate pair of the last point generated from inlet line
+    downCurveEnd : numpy.ndarray
+        An x,y,z coordinate pair of the last point generated from straightline after bezier curve
+
+    Returns
+    -------
+    topLine : numpy.ndarray
+        returns two (x,y,z) coordinates that defines the top boundary wall
+
+    """
     topLine = np.zeros([3,2])
     topLine[0,0] = inletLineEnd[0] # this is the x coord 
     topLine[1,0] = inletLineEnd[1] # this is the y coord 
     topLine[2,0] = inletLineEnd[2] # this is the z coord 
     
-    topLine[0,1] = downCurveEnd[0] # this is the x coord
+    topLine[0,1] = (downCurveEnd[0] -inletLineEnd[0]) /2 # this is the x coord
     topLine[1,1] = inletLineEnd[1] # this is the y coord 
     topLine[2,1] = downCurveEnd[2] # this is the z coord
     
     return topLine
 
 
-def rightCurve(topLineEnd, R2):
-    rightLine = np.zeros([3,2])
+def rightCurve(topLineEnd, topLipEnd):
+    """
+    Parameters
+    ----------
+    topLineEnd : numpy.ndarray
+         An x,y,z coordinate pair of the last point generated from top line
+    topLipEnd : numpy.ndarray
+        An x,y,z coordinate pair of the first point from the bezier curve (lip)
+
+    Returns
+    -------
+    rightLine : numpy.ndarray
+        returns (x,y,z) points that define the right wall (at the top) and the connection back to the start
+
+    """
+    rightLine = np.zeros([3,3])
     rightLine[0,0] = topLineEnd[0] # this is the x coord 
     rightLine[1,0] = topLineEnd[1] # this is the y coord 
     rightLine[2,0] = topLineEnd[2] # this is the z coord 
     
-    rightLine[0,1] = topLineEnd[0] # this is the x coord
-    rightLine[1,1] = R2*1.5 # this is the y coord 
-    rightLine[2,1] = topLineEnd[0]# this is the z coord
+    rightLine[0,1] = topLineEnd[0] # this is the x coord 
+    rightLine[1,1] = topLipEnd[1] # this is the y coord 
+    rightLine[2,1] = topLineEnd[2] # this is the z coord 
+    
+    rightLine[0,2] = topLipEnd[0] # this is the x coord
+    rightLine[1,2] = topLipEnd[1] # this is the y coord 
+    rightLine[2,2] = topLipEnd[2]# this is the z coord
     
     return rightLine
 
 
 def backSideCurve(upStreamDist, rightLineEnd):
+    "CURRENLTY NOT BEING CALLED"
+    """
+    Parameters
+    ----------
+    upStreamDist : float
+        the straightline distance after the bezier curve
+    rightLineEnd : numpy.ndarray
+        An x,y,z coordinate pair of the last point on the right line
+
+    Returns
+    -------
+    backSideLine : numpy.ndarray
+        returns (x,y,z) points that define the curve on the backside of the bezier curve.
+
+    """
     backSideLine = np.zeros([3,2])
     backSideLine[0,0] = rightLineEnd[0] # this is the x coord 
     backSideLine[1,0] = rightLineEnd[1] # this is the y coord 
