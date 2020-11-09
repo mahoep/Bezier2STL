@@ -8,6 +8,7 @@ Created on Sat Nov  7 22:33:10 2020
 import numpy as np
 import bezierFunc
 import contractionGeom
+import curve2stl
 import matplotlib.pyplot as plt
 
 R1 = 0.4645  # radius at the inflection point
@@ -46,17 +47,18 @@ Xcurve = np.concatenate((Q[0,:], downLine[0,:], outletLine[0,:], symmetryLine[0,
 Ycurve = np.concatenate((Q[1,:], downLine[1,:], outletLine[1,:], symmetryLine[1,:], inletLine[1,:], topLine[1,:], rightLine[1,:]))
 Zcurve = np.concatenate((Q[2,:], downLine[2,:], outletLine[2,:], symmetryLine[2,:], inletLine[2,:], topLine[2,:], rightLine[2,:]))
 
-M = np.array([Xcurve, Ycurve, Zcurve])
-idx = np.unique(M,axis=1, return_index=True)[1]
-LineAll = np.transpose(np.array([M[:,i] for i in sorted(idx)]))
+lineAll = np.array([Xcurve, Ycurve, Zcurve])
+#idx = np.unique(M,axis=1, return_index=True)[1]
+#lineAll = np.transpose(np.array([M[:,i] for i in sorted(idx)]))
 
 alpha = np.rad2deg(np.arctan( abs( y[-2] - y[4]) / abs( x[-2] - x[4])))
 print(alpha)
 
 #plt.plot(Xcurve,Ycurve)
-plt.plot(LineAll[0,:],LineAll[1,:])
+plt.scatter(lineAll[0,:],lineAll[1,:])
 plt.axis('equal')
 plt.ylim(0)
 plt.xlim(0)
 
+faces = curve2stl.main(lineAll, 0.1)
 

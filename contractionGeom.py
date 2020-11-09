@@ -2,7 +2,7 @@
 """
 Created on Sat Nov  7 23:52:57 2020
 
-@author: Matt
+@author: mahoep
 """
 
 import numpy as np
@@ -60,7 +60,7 @@ def contractionGen(R1, lengthOverRadius):
     return points
 
 
-def downstreamCurve(contractionEndPoint,upStreamDist):
+def downstreamCurve(contractionEndPoint,downStreamDist):
     """
     Parameters
     ----------
@@ -79,7 +79,7 @@ def downstreamCurve(contractionEndPoint,upStreamDist):
     downCurve[1,0] = contractionEndPoint[1] # this is the y coord 
     downCurve[2,0] = contractionEndPoint[2] # this is the z coord 
     
-    downCurve[0,1] = contractionEndPoint[0] + length # this is the x coord
+    downCurve[0,1] = contractionEndPoint[0] + downStreamDist # this is the x coord
     downCurve[1,1] = contractionEndPoint[1] # this is the y coord 
     downCurve[2,1] = contractionEndPoint[2] # this is the z coord 
     
@@ -107,6 +107,7 @@ def outletCurve(downCurveEnd):
     outletLine[1,1] = 0 # this is the y coord 
     outletLine[2,1] = downCurveEnd[2] # this is the z coord
     
+    
     return outletLine
 
 
@@ -124,13 +125,13 @@ def symmetryCurve(outletEnd):
 
     """
     symmetryLine = np.zeros([3,2])
-    symmetryLine[0,0] = 0 # this is the x coord 
-    symmetryLine[1,0] = 0 # this is the y coord 
-    symmetryLine[2,0] = 0 # this is the z coord 
+    symmetryLine[0,0] = outletEnd[0] # this is the x coord 
+    symmetryLine[1,0] = outletEnd[1] # this is the y coord 
+    symmetryLine[2,0] = outletEnd[2] # this is the z coord 
     
-    symmetryLine[0,1] = outlet[0] # this is the x coord
-    symmetryLine[1,1] = outlet[1] # this is the y coord 
-    symmetryLine[2,1] = outlet[2] # this is the z coord
+    symmetryLine[0,1] = 0 # this is the x coord
+    symmetryLine[1,1] = 0 # this is the y coord 
+    symmetryLine[2,1] = 0 # this is the z coord
     
     return symmetryLine
 
@@ -202,7 +203,7 @@ def rightCurve(topLineEnd, topLipEnd):
         returns (x,y,z) points that define the right wall (at the top) and the connection back to the start
 
     """
-    rightLine = np.zeros([3,3])
+    rightLine = np.zeros([3,5])
     rightLine[0,0] = topLineEnd[0] # this is the x coord 
     rightLine[1,0] = topLineEnd[1] # this is the y coord 
     rightLine[2,0] = topLineEnd[2] # this is the z coord 
@@ -211,9 +212,17 @@ def rightCurve(topLineEnd, topLipEnd):
     rightLine[1,1] = topLipEnd[1] # this is the y coord 
     rightLine[2,1] = topLineEnd[2] # this is the z coord 
     
-    rightLine[0,2] = topLipEnd[0] # this is the x coord
+    rightLine[0,2] = topLineEnd[0] # this is the x coord 
     rightLine[1,2] = topLipEnd[1] # this is the y coord 
-    rightLine[2,2] = topLipEnd[2]# this is the z coord
+    rightLine[2,2] = topLineEnd[2] # this is the z coord 
+    
+    rightLine[0,3] = topLipEnd[0] # this is the x coord
+    rightLine[1,3] = topLipEnd[1] # this is the y coord 
+    rightLine[2,3] = topLipEnd[2]# this is the z coord
+    
+    rightLine[0,4] = topLipEnd[0] # this is the x coord
+    rightLine[1,4] = topLipEnd[1] # this is the y coord 
+    rightLine[2,4] = topLipEnd[2]# this is the z coord
     
     return rightLine
 
