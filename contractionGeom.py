@@ -116,7 +116,7 @@ def topCurve(inletLineEnd, downCurveEnd):
     topLine[1,0] = inletLineEnd[1] # this is the y coord 
     topLine[2,0] = inletLineEnd[2] # this is the z coord 
     
-    topLine[0,1] = downCurveEnd[0] - .45 # this is the x coord
+    topLine[0,1] = downCurveEnd[0] # this is the x coord
     topLine[1,1] = inletLineEnd[1] # this is the y coord 
     topLine[2,1] = downCurveEnd[2] # this is the z coord
     
@@ -130,7 +130,7 @@ def rightCurve(topLineEnd, R2):
     rightLine[2,0] = topLineEnd[2] # this is the z coord 
     
     rightLine[0,1] = topLineEnd[0] # this is the x coord
-    rightLine[1,1] = R2*3 # this is the y coord 
+    rightLine[1,1] = R2*1.5 # this is the y coord 
     rightLine[2,1] = topLineEnd[0]# this is the z coord
     
     return rightLine
@@ -142,7 +142,7 @@ def backSideCurve(upStreamDist, rightLineEnd):
     backSideLine[1,0] = rightLineEnd[1] # this is the y coord 
     backSideLine[2,0] = rightLineEnd[2] # this is the z coord 
     
-    backSideLine[0,1] = rightLineEnd[0] - upStreamDist/4 # this is the x coord 
+    backSideLine[0,1] = rightLineEnd[0] - upStreamDist/2 # this is the x coord 
     backSideLine[1,1] = rightLineEnd[1] # this is the y coord 
     backSideLine[2,1] = rightLineEnd[2] # this is the z coord 
     
