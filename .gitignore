@@ -1,3 +1,7 @@
+*.foam
+log.*
+cfMeshTest/.*/
+!cfMestTest/0/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

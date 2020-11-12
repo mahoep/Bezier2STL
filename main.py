@@ -11,12 +11,14 @@ import contractionGeom
 import curve2stl
 import matplotlib.pyplot as plt
 
-R1 = 0.4645  # radius at the inflection point
-R2 = 0.2        # final radius after contraction
-maxR = 0.8      # radius of entire geometry
-length_Radius = 1.944   # ratio of length over radius
-downStreamDist = 0.4    # straight line distance after bezier curve to outlet
-upStreamDist = 0.4      # space between inflection point and inlet
+R1 = 4 # radius at the inflection point
+R2 = 2     # final radius after contraction
+R1 = (R1-R2)*.0254 # for some reason R1 when built, is acutally R1+R2
+R2 = 2*.0254 
+maxR = 5*.0254    # radius of entire geometry
+length_Radius = 1.6 # ratio of length over radius of just the bezeir curve
+downStreamDist = 4*.0254  # straight line distance after bezier curve to outlet
+upStreamDist = 4 *.0254    # space between inflection point and inlet
 
 points = contractionGeom.contractionGen(R1, length_Radius)
 x = [points[i].x for i in range(np.size(points))]
@@ -52,7 +54,8 @@ lineAll = np.array([Xcurve, Ycurve, Zcurve])
 #lineAll = np.transpose(np.array([M[:,i] for i in sorted(idx)]))
 
 alpha = np.rad2deg(np.arctan( abs( y[-2] - y[4]) / abs( x[-2] - x[4])))
-print(alpha)
+print("Approximate angle of contraction:",alpha)
+print("Length over Radius:", ( Q[0,-1] - min(Q[0,:]) )/R2)
 
 #plt.plot(Xcurve,Ycurve)
 plt.scatter(lineAll[0,:],lineAll[1,:])
@@ -60,5 +63,5 @@ plt.axis('equal')
 plt.ylim(0)
 plt.xlim(0)
 
-faces = curve2stl.main(lineAll, 0.1)
+curve2stl.main(lineAll, 0.05)
 
