@@ -83,7 +83,7 @@ functions
     {
         type            turbulenceFields;
         libs            (fieldFunctionObjects);
-        fields          (I L);
+        field           I;
         writeControl    writeTime;
         
     }
