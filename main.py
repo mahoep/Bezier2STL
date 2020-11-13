@@ -20,10 +20,10 @@ length_Radius = 1.6 # ratio of length over radius of just the bezeir curve
 downStreamDist = 4*.0254  # straight line distance after bezier curve to outlet
 upStreamDist = 4 *.0254    # space between inflection point and inlet
 
-points = contractionGeom.contractionGen(R1, length_Radius)
-x = [points[i].x for i in range(np.size(points))]
-y = [points[i].y for i in range(np.size(points))]
-z = [points[i].z for i in range(np.size(points))]
+points = contractionGeom._contractionGen(R1, length_Radius)
+x = points[:,0]
+y = points[:,1]
+z = points[:,2]
 
 P = np.array([x,y,z])
 t = np.linspace(0,1,200)
