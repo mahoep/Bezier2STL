@@ -11,8 +11,7 @@ Ex   (turbulenceProperites:I) which is an invalid character in windows file syst
 This small script renames all instances of it.
 """
 
-import os, fnmatch
-
+import os
 substring = 'turbulence'
 field = ['I','L']
 
