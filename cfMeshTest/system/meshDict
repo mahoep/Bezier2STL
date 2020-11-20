@@ -16,7 +16,7 @@ FoamFile
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxCellSize     0.005;
+maxCellSize     0.001;
 
 surfaceFile     "geom/feature.stl";
 
@@ -26,7 +26,7 @@ localRefinement
         {
             additionalRefinementLevels  2;
 
-            refinementThickness 0.0025;
+            refinementThickness 0.001;
 
         }
 }
@@ -57,7 +57,7 @@ boundaryLayers
     {
         nSmoothNormals 10;
         maxNumIterations 10;
-        reCalculateNormals 10;
+        reCalculateNormals 1;
         featureSizeFactor  0.1;
     }
 }
@@ -73,11 +73,30 @@ objectRefinements
     cone
     {
         type        cone;
-        cellSize    0.001;
-        p0          (0.405 0.6642 0.1);
-        p1          (0.405 0.6642 0);
-        radius0     0.01;
-        radius1     0.01;
+        cellSize    0.00025;
+        p0          (0.1017 0.1525 0.1);
+        p1          (0.1017 0.1525 0);
+        radius0     0.005;
+        radius1     0.005;
+    }
+
+    boxEx
+    {
+        type            box;
+        cellSize        0.0005;
+        centre          (0.3551 0.0508 0);
+        lengthX         0.01;
+        lengthY         0.01;
+        lengthZ         0.01;
+    }
+
+    lineEx
+    {
+        type            line;
+        cellSize        0.002;
+        p0          (0.3551 0.045 0);
+        p1          (0.3551 0 0);
+        refinementThickness        0.005;
     }
 }
 // ************************************************************************* //
