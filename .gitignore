@@ -1,6 +1,7 @@
 *.foam
 log.*
-cfMeshTest/.*/
+badSurfaceWithSubsets.fms
+cfMeshTest/0.*/
 !cfMestTest/0/
 # Byte-compiled / optimized / DLL files
 __pycache__/

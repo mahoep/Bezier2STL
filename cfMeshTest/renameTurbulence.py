@@ -16,7 +16,7 @@ substring = 'turbulence'
 field = ['I','L']
 
 for k in field:
-    for root, dirs, files in os.walk("./"):
+    for root, dirs, files in os.walk("C:/Users/Matt/Documents/Programming/HTRCFD/data/inletTest1"):
         for file in files:
             if substring in file and k in file:
                 newFile = 'turbulenceProperties.'+k

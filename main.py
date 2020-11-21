@@ -11,12 +11,12 @@ import contractionGeom
 import curve2stl
 import matplotlib.pyplot as plt
 
-R1 = 4 # radius at the inflection point
+R1 = 8 # radius at the inflection point
 R2 = 2     # final radius after contraction
 R1 = (R1-R2)*.0254 # for some reason R1 when built, is acutally R1+R2
 R2 = 2*.0254 
-maxR = 5*.0254    # radius of entire geometry
-length_Radius = 1.6 # ratio of length over radius of just the bezeir curve
+maxR = 9*.0254    # radius of entire geometry
+length_Radius = 2.5 # ratio of length over radius of just the bezeir curve
 downStreamDist = 4*.0254  # straight line distance after bezier curve to outlet
 upStreamDist = 4 *.0254    # space between inflection point and inlet
 
@@ -63,5 +63,5 @@ plt.axis('equal')
 plt.ylim(0)
 plt.xlim(0)
 
-curve2stl.main(lineAll, 0.05)
+curve2stl.main(lineAll, 0.01)
 

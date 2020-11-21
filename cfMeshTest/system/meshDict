@@ -16,22 +16,19 @@ FoamFile
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxCellSize     0.001;
+maxCellSize     0.005;
 
-surfaceFile     "geom/feature.stl";
-
+surfaceFile     "geom/threeDtest.stl";
+/*
 localRefinement
 {
         test_0
         {
             additionalRefinementLevels  2;
-
             refinementThickness 0.001;
 
         }
 }
-
-
 
 boundaryLayers
 {
@@ -44,6 +41,7 @@ boundaryLayers
             optimiseLayer           1;
             maxFirstLayerThickness  0.0005;
         }
+        
 
         test_4
         {
@@ -99,4 +97,5 @@ objectRefinements
         refinementThickness        0.005;
     }
 }
+*/
 // ************************************************************************* //
