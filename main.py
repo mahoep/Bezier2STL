@@ -11,14 +11,15 @@ import contractionGeom
 import curve2stl
 import matplotlib.pyplot as plt
 
-R1 = 8 # radius at the inflection point
+R1 = 4 # radius at the inflection point
 R2 = 2     # final radius after contraction
 R1 = (R1-R2)*.0254 # for some reason R1 when built, is acutally R1+R2
 R2 = 2*.0254 
-maxR = 9*.0254    # radius of entire geometry
-length_Radius = 2.5 # ratio of length over radius of just the bezeir curve
+maxR = 5*.0254    # radius of entire geometry
+length_Radius = 2 # ratio of length over radius of just the bezeir curve
 downStreamDist = 4*.0254  # straight line distance after bezier curve to outlet
 upStreamDist = 4 *.0254    # space between inflection point and inlet
+
 
 points = contractionGeom._contractionGen(R1, length_Radius)
 x = points[:,0]
@@ -26,7 +27,7 @@ y = points[:,1]
 z = points[:,2]
 
 P = np.array([x,y,z])
-t = np.linspace(0,1,200)
+t = np.linspace(0,1,300)
 Q = bezierFunc.Bezier(P,t)
 Q[0,:] = Q[0,:] + upStreamDist - min(Q[0,:])
 Q[1,:] = Q[1,:] + R2
@@ -50,6 +51,11 @@ Ycurve = np.concatenate((Q[1,:], downLine[1,:], outletLine[1,:], symmetryLine[1,
 Zcurve = np.concatenate((Q[2,:], downLine[2,:], outletLine[2,:], symmetryLine[2,:], inletLine[2,:], topLine[2,:], rightLine[2,:]))
 
 lineAll = np.array([Xcurve, Ycurve, Zcurve])
+curveForCAD = np.round(np.transpose(([Q[0,:], Q[1,:], Q[2,:]]))/.0254,decimals=4)
+np.savetxt('curve.txt', curveForCAD, delimiter=',')
+
+curveForCAD2 = np.round(np.transpose(([Q[0,:], Q[2,:], Q[1,:]]))/.0254,decimals=4)
+np.savetxt('curve2.txt', curveForCAD2, delimiter=',')
 #idx = np.unique(M,axis=1, return_index=True)[1]
 #lineAll = np.transpose(np.array([M[:,i] for i in sorted(idx)]))
 
@@ -58,10 +64,10 @@ print("Approximate angle of contraction:",alpha)
 print("Length over Radius:", ( Q[0,-1] - min(Q[0,:]) )/R2)
 
 #plt.plot(Xcurve,Ycurve)
-plt.scatter(lineAll[0,:],lineAll[1,:])
+plt.scatter(curveForCAD[:,0],curveForCAD[:,1])
 plt.axis('equal')
-plt.ylim(0)
-plt.xlim(0)
+# plt.ylim(0)
+# plt.xlim([0, .25])
 
 curve2stl.main(lineAll, 0.01)
 
